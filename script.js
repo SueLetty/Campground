@@ -1,3 +1,18 @@
+//code for getting user current coordinates
+let userCoords = []
+
+const onSuccess = (position) =>{
+    const userLat = position.coords.longitude;
+    const userLong = position.coords.latitude;
+    userCoords = [userLat, userLong]
+    console.log("Latitude:", userLat, "Longitude:", userLong);
+}
+
+const onError = (error) => {
+    console.error(error);
+}
+    
+navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
 // using city name and state name to get longitude and latitude
 form_btn.addEventListener("submit",(event) => {
@@ -32,9 +47,5 @@ form_btn.addEventListener("submit",(event) => {
         }
     })
     console.log(destinationCoords);
-
-
-
 })
-
 
