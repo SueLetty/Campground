@@ -40,7 +40,7 @@ header{
 label{
     color: white;
 }
-#login_form{
+#login_form, #signup_form{
 
     margin-top: 1px;
     height: 75vh;
