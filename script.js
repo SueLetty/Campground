@@ -33,8 +33,6 @@ form_btn.addEventListener("submit",(event) => {
         const coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
     }
-
-
     fetch(coord_API)
     .then((res) => res.json())
     .then((data) => {
