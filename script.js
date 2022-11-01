@@ -8,6 +8,9 @@ form_btn.addEventListener("submit",(event) => {
     const cityName = city.value;
     const stateName = state.value;
     let newCityName;
+
+    document.getElementById('form_btn').reset();
+
     let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
     if(cityName.includes(" ")){
@@ -15,6 +18,7 @@ form_btn.addEventListener("submit",(event) => {
         const coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
     }
+
 
     fetch(coord_API)
     .then((res) => res.json())
@@ -27,6 +31,8 @@ form_btn.addEventListener("submit",(event) => {
             }
         }
     })
+    console.log(destinationCoords);
+
 
 
 })
