@@ -1,3 +1,18 @@
+//code for getting user current coordinates
+let userCoords = []
+
+const onSuccess = (position) =>{
+    const userLat = position.coords.longitude;
+    const userLong = position.coords.latitude;
+    userCoords = [userLat, userLong]
+    console.log("Latitude:", userLat, "Longitude:", userLong);
+}
+
+const onError = (error) => {
+    console.error(error);
+}
+    
+navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
 // using city name and state name to get longitude and latitude
 form_btn.addEventListener("submit",(event) => {
@@ -18,8 +33,6 @@ form_btn.addEventListener("submit",(event) => {
         const coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
     }
-
-
     fetch(coord_API)
     .then((res) => res.json())
     .then((data) => {
@@ -32,9 +45,5 @@ form_btn.addEventListener("submit",(event) => {
         }
     })
     console.log(destinationCoords);
-
-
-
 })
-
 

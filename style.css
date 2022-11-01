@@ -77,4 +77,11 @@ p, h6{
     justify-content:space-between
     
 }
+/* styles for About Us Page */
+#meet_the_team {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    color: aliceblue;  
+}
 
