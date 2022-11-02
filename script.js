@@ -258,7 +258,5 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      cardBody.appendChild(linkTag);
      
      document.querySelector(".col-md-10").appendChild(cardTemplate);
-
-     //End of the card creation
 }
 
