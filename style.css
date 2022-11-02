@@ -84,4 +84,24 @@ p, h6{
     margin-top: 15px;
     color: aliceblue;  
 }
+.profiles_row{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    margin-top: 10px;
+    margin-bottom: 10px;
 
+}
+.profile_img{
+    position: relative;
+    width: 350px;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+.profile_img:hover {opacity: 0.8;}
+.col-md-3{
+    display: flex;
+    flex-direction: column;
+}
