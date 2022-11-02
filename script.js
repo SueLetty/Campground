@@ -133,7 +133,7 @@ function addEventToSearchBtn(event){
         //Creation of the right side div which will hold the cards.
         rightSide = document.createElement("div");
         rightSide.classList.add("col-md-10");
-        rightSide.style.color = "white";                                           //Placeholder for visuals  
+        //rightSide.style.color = "white";                                           //Placeholder for visuals  
         rightSide.textContent = "[Destinaions Cards]";
         rightSide.style.paddingBottom = "600px";
         rightSide.style.border = "5px solid red";
@@ -210,7 +210,7 @@ function addEventToSearchBtn(event){
                 description = facility.FacilityDescription;
                 address = facility.FACILITYADDRESS[0].FacilityStreetAddress1; // take whole object and convert to string?
                 phone = facility.FacilityPhone;
-                facilitySite = facility.ORGANIZATION[0].OrgURLAddress;
+                facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
                 
                 createCard(imageUrl, campName, description, address, phone, facilitySite);
             }
@@ -225,37 +225,40 @@ function addEventToSearchBtn(event){
 
 function createCard(imageUrl, campName, description, address, phone, facilitySite) {
      //Creation of cards
-     cardTemplate = document.createElement("div");
-     cardTemplate.classList.add("cardContainer")
+     const cardTemplate = document.createElement("div");
+     cardTemplate.classList.add("card"); //change from
      cardTemplate.style.width = "18rem";
-     document.querySelector(".col-md-10").appendChild(cardTemplate);
      
      const cardImage = document.createElement("img");
      cardImage.classList.add("card-img-top");
      cardImage.setAttribute("src", imageUrl);
      cardImage.setAttribute("alt", imageUrl);
-     document.querySelector(".cardContainer").appendChild(cardImage);
-
+     cardTemplate.appendChild(cardImage);
+     
      const cardBody = document.createElement("div");
      cardBody.classList.add("card-body")
-     document.querySelector(".cardContainer").appendChild(cardBody);
-
+     cardTemplate.appendChild(cardBody);
+     
      const cardTitle = document.createElement("h5");
      cardTitle.classList.add("card-title");
      cardTitle.textContent = campName;
-     document.querySelector(".card-body").appendChild(cardTitle);
-
+     cardBody.appendChild(cardTitle);
+     
      const cardParagraph = document.createElement("p");
      cardParagraph.classList.add("card-text");
-     cardParagraph.textContent = address;
-     document.querySelector(".card-body").appendChild(cardParagraph);
-
+     cardParagraph.textContent = address;           //information in card
+     cardBody.appendChild(cardParagraph);
+     
      const linkTag = document.createElement("a");
      linkTag.classList.add("btn");
      linkTag.classList.add("btn-primary");
-     linkTag.setAttribute("href", facilitySite);                        //This needs a source
+     linkTag.setAttribute("href", facilitySite);   
+     linkTag.setAttribute("target", '_blank')     
      linkTag.textContent = "More Information";
-     document.querySelector(".card-body").appendChild(linkTag);
+     cardBody.appendChild(linkTag);
+     
+     document.querySelector(".col-md-10").appendChild(cardTemplate);
+
      //End of the card creation
 }
 
