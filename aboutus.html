@@ -38,49 +38,154 @@
       </div>
       <div id="picture_container">
         <div class="profiles_row">
-          <img
-            src="https://images.unsplash.com/photo-1667213472629-1da915716b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            alt=""
-            id="first_profile"
-            class="profile_img"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          />
-
-          <img
-            src="https://images.unsplash.com/photo-1667213472629-1da915716b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            alt=""
-            id="second_profile"
-            class="profile_img"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          />
-          <img
-            src="https://images.unsplash.com/photo-1667213472629-1da915716b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            alt=""
-            id="third_profile"
-            class="profile_img"
-          />
+          <div class="picture_wrapper">
+            <img
+              src="./profile pictures/Anthony.png"
+              alt=""
+              id="anthony_profile"
+              class="profile_img"
+              data-bs-toggle="modal"
+              data-bs-target="#anthonyModal"
+            />
+            <h2>Anthony Willis</h2>
+          </div>
+          <div class="picture_wrapper">
+            <img
+              src="./profile pictures/Eric.jpg"
+              alt=""
+              id="eric_profile"
+              class="profile_img"
+              data-bs-toggle="modal"
+              data-bs-target="#ericModal"
+            />
+            <h2>Eric Banda</h2>
+          </div>
+          <div class="picture_wrapper">
+            <img
+              src="./profile pictures/Gionvani.png"
+              alt=""
+              id="gio_profile"
+              class="profile_img"
+              data-bs-toggle="modal"
+              data-bs-target="#giovanniModal"
+            />
+            <h2>Giovanni Mejia</h2>
+          </div>
         </div>
         <div class="profiles_row">
-          <img
-            src="https://images.unsplash.com/photo-1667213472629-1da915716b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            alt=""
-            id="fourth_profile"
-            class="profile_img"
-          />
-          <img
-            src="https://images.unsplash.com/photo-1667213472629-1da915716b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            alt=""
-            id="fifth_profile"
-            class="profile_img"
-          />
+          <div class="picture_wrapper">
+            <img
+              src="./profile pictures/Maria.jpg"
+              alt=""
+              id="maria_profile"
+              class="profile_img"
+              data-bs-toggle="modal"
+              data-bs-target="#mariaModal"
+            />
+            <h2>Maria Quintana</h2>
+          </div>
+          <div class="picture_wrapper">
+            <img
+              src="./profile pictures/xiuxiang.png"
+              alt=""
+              id="xiuxiang_profile"
+              class="profile_img"
+              data-bs-toggle="modal"
+              data-bs-target="#xiuxiangModal"
+            />
+            <h2>Xiuxiang Wu</h2>
+          </div>
         </div>
       </div>
-      <!-- Modal -->
+      <!-- Modal for Anthony-->
       <div
         class="modal fade"
-        id="exampleModal"
+        id="anthonyModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header modal_background">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Anthony Willis
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body modal_background">
+              <div class="row">
+                <div class="col-md-3">
+                  <img src="./profile pictures/Anthony.png" />
+                </div>
+                <div class="col-md-9">
+                  <ul>
+                    <h5>About Me</h5>
+                    <li>
+                      Prior Fleet Marine Forces Corpsman turned Software
+                      Developer. I enjoy learning new things, all things winter
+                      sports, and reading.
+                    </li>
+                    <li>
+                      <a
+                        target="_blank"
+                        href=" https://www.linkedin.com/in/willis-anthony/"
+                        ><i class="fa fa-linkedin" style="font-size: 24px"></i
+                      ></a>
+                      <p class="contact_link">
+                        <a
+                          target="_blank"
+                          href="https://www.linkedin.com/in/willis-anthony/"
+                          >https://www.linkedin.com/in/willis-anthony/</a
+                        >
+                      </p>
+                    </li>
+                    <li>
+                      <a
+                        target="_blank"
+                        href="https://github.com/Anthony-Willis"
+                        ><i class="fa fa-github" style="font-size: 24px"></i
+                      ></a>
+                      <a
+                        target="_blank"
+                        href="https://github.com/Anthony-Willis"
+                      >
+                        <p class="contact_link">
+                          https://github.com/Anthony-Willis
+                        </p>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        target="_blank"
+                        href="mailto:Anthony.m.willis@outlook.com"
+                      >
+                        <i class="fa fa-envelope" style="font-size: 24px"></i>
+                      </a>
+                      <a
+                        target="_blank"
+                        href="mailto:Anthony.m.willis@outlook.com"
+                        ><p class="contact_link">
+                          Anthony.m.willis@outlook.com
+                        </p></a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal for Eric -->
+      <div
+        class="modal fade"
+        id="ericModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -89,7 +194,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Name of Person
+                Eric Banda
               </h1>
               <button
                 type="button"
@@ -101,11 +206,171 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-3">
-                  <img
-                    src="https://images.unsplash.com/photo-1667213472629-1da915716b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                  />
+                  <img src="./profile pictures/Eric.jpg" />
                 </div>
-                <div class="col-md-9">contact info here</div>
+                <div class="col-md-9">
+                  <ul>
+                    <h5>About Me</h5>
+                    <li>Bio Goes Here.</li>
+                    <li>
+                      <i class="fa fa-github" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-envelope" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-linkedin" style="font-size: 24px"></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal for Giovanni -->
+      <div
+        class="modal fade"
+        id="giovanniModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Giovanni Mejia
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <img src="./profile pictures/Gionvani.png" />
+                </div>
+                <div class="col-md-9">
+                  <ul>
+                    <h5>About Me</h5>
+                    <li>
+                      Lifelong learner and always willing to take on new
+                      challenges. I enjoy reading, walking, and watching the
+                      latest Star Wars.
+                    </li>
+                    <li>
+                      <i class="fa fa-github" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-envelope" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-linkedin" style="font-size: 24px"></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal for Maria -->
+      <div
+        class="modal fade"
+        id="mariaModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Maria Quintana
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <img src="./profile pictures/Maria.jpg" />
+                </div>
+                <div class="col-md-9">
+                  <ul>
+                    <h5>About Me</h5>
+                    <li>
+                      I am a U.S. Navy Veteran. I enjoy travel, hiking and
+                      cooking.
+                    </li>
+                    <li>
+                      <i class="fa fa-github" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-envelope" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-linkedin" style="font-size: 24px"></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal for Xiuxiang -->
+      <div
+        class="modal fade"
+        id="xiuxiangModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Xiuxiang Wu
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <img src="./profile pictures/xiuxiang.png" />
+                </div>
+                <div class="col-md-9">
+                  <ul>
+                    <h5>About Me</h5>
+                    <li>
+                      Bachelor of Science degree in Computer Science. I like
+                      traveling, cooking, and acrylic painting.
+                    </li>
+                    <li>
+                      <i class="fa fa-github" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-envelope" style="font-size: 24px"></i>
+                    </li>
+                    <li>
+                      <i class="fa fa-linkedin" style="font-size: 24px"></i>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -119,7 +384,7 @@
 
       <div id="contact">
         <h6>Contact Us</h6>
-        <p>Adress: 123 iditmay Way, Seattle, WA</p>
+        <p>Address: 123 Iditmay Way, Seattle, WA</p>
         <p>campsight@campground.com</p>
         <p>+1 888.888.8888</p>
       </div>
