@@ -77,19 +77,14 @@ function addUser(event){
 
     for(let i = 0; i <= userList.length; i++){
 
-
-        if(i !==userList.length && userList[i].uName === uname && userList[i].password === password){
-                
+        if(i !==userList.length && userList[i].uName === uname && userList[i].password === password){  
             window.location = "index.html";
         }
         if( i === userList.length && userList[i].uName !== uname && userList[i].password !== password){
             alert("Your User name does not match your password!");
             window.location = 'login.html';
         }
-    }
-
-
-              
+    }          
 }
 
 // using city name and state name to get longitude and latitude
@@ -97,7 +92,7 @@ function addEventToSearchBtn(event){
     event.preventDefault();
 
     //use this to call your API index 0 is latitude, index 1 is longitude
-    var destinationCoords = [];
+    let destinationCoords = [];
     const cityName = city.value;
     const stateName = state.value;
     let newCityName;
@@ -129,13 +124,11 @@ function addEventToSearchBtn(event){
         //Creation of the left side coloumn.
         leftSide = document.createElement("div");
         leftSide.classList.add("col-md-2");
-        leftSide.textContent = "Input information here";
+
+        leftSide.textContent = cityName + ", " + stateName;
         leftSide.style.color = "white";                                            //Placeholder for visuals 
         leftSide.style.paddingBottom = "600px";
-        leftSide.style.border = "5px solid red";
         document.querySelector(".row").appendChild(leftSide);
-
-
 
         //Creation of the right side div which will hold the cards.
         rightSide = document.createElement("div");
@@ -146,7 +139,45 @@ function addEventToSearchBtn(event){
         rightSide.style.border = "5px solid red";
         document.querySelector(".row").appendChild(rightSide);
         
-        //Creation of cards
+       
+
+        let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
+        const kelvin = 273;
+
+        // Calling the API
+        fetch(weatherAPI)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            let temperature = Math.floor(data["main"]["temp"] - kelvin) *1.8 + 32;
+            let lowTemp = Math.floor(data["main"]["temp_min"] - kelvin) *1.8 + 32;
+            let highTemp = Math.floor(data["main"]["temp_max"] - kelvin) *1.8 + 32;
+            //insert thiz into the left bracket 
+             //Creation of the div within the left side column.
+             weatherDiv = document.createElement("div");
+             weatherDiv.setAttribute("id", "weather_div");             
+             weatherDiv.textContent = "Current Temp: " + temperature + "°F" + "          Low: " + lowTemp + "°F" + "\n High: " + highTemp + "°F";  //Place Weather variable here
+             document.querySelector(".col-md-2").appendChild(weatherDiv);
+        });
+
+        //Fetch to get the time with the coordinates.
+        let userUrl = `https://api.ipgeolocation.io/timezone?apiKey=8ae13e06e4a146dbb9bc8ee8617ed910&lat=${destinationCoords[0]}&long=${destinationCoords[1]}`;
+        
+        fetch(userUrl)
+        .then((res) => res.json())
+        .then((data) => {
+            
+            const destinationTime = data.date_time;
+
+            //Creation of the div within the left side column.
+            timeDiv = document.createElement("div");
+            timeDiv.setAttribute("id", "time_div");            
+            timeDiv.textContent = destinationTime;  //Place Weather variable here
+            document.querySelector(".col-md-2").appendChild(timeDiv);
+        });
+        //Eric code goes here
+        
+         //Creation of cards
         cardTemplate = document.createElement("div");
         cardTemplate.classList.add("cardContainer")
         cardTemplate.style.width = "18rem";
@@ -179,39 +210,6 @@ function addEventToSearchBtn(event){
         linkTag.textContent = "More Information";
         document.querySelector(".card-body").appendChild(linkTag);
         //End of the card creation
-
-        let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
-        const kelvin = 273;
-
-        // Calling the API
-        fetch(weatherAPI)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            let temperature = Math.floor(data["main"]["temp"] - kelvin) *1.8 + 32;
-
-            
-        });
-
-
-
-        //Fetch to get the time with the coordinates.
-        let userUrl = `https://api.ipgeolocation.io/timezone?apiKey=8ae13e06e4a146dbb9bc8ee8617ed910&lat=${destinationCoords[0]}&long=${destinationCoords[1]}`;
-        
-        fetch(userUrl)
-        .then((res) => res.json())
-        .then((data) => {
-            
-            const destinationTime = data.date_time;
-
-            //Creation of the div within the left side column.
-            timeDiv = document.createElement("div");
-            timeDiv.setAttribute("id", "time_div");
-            timeDiv.style.border = "5px solid white";                                  //Placeholder for visuals             
-            timeDiv.textContent = destinationTime + " [Destinaion Weather Variable]";  //Place Weather variable here
-            document.querySelector(".col-md-2").appendChild(timeDiv);
-    
-        });
 
     }) //For out fetch
     
