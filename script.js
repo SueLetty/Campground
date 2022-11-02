@@ -4,10 +4,9 @@ let userCoords = []
 const onSuccess = (position) =>{
     const userLat = position.coords.longitude;
     const userLong = position.coords.latitude;
-    userCoords.push(userLat, userLong);
+    userCoords = [userLat, userLong]
     console.log("Latitude:", userLat, "Longitude:", userLong);
 }
-console.log(userCoords);
 
 const onError = (error) => {
     console.error(error);
@@ -44,7 +43,6 @@ form_btn.addEventListener("submit",(event) => {
                 
             }
         }
-  
 
         //Code to remove carousel
         document.querySelector(".carousel").remove();
