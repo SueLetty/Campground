@@ -1,13 +1,21 @@
 //code for getting user current coordinates
-let userCoords = []
 
 const onSuccess = (position) =>{
-    const userLat = position.coords.longitude;
-    const userLong = position.coords.latitude;
-    userCoords = [userLat, userLong]
-    console.log("Latitude:", userLat, "Longitude:", userLong);
-}
+    let userLong =position.coords.longitude; 
+    let userLat = position.coords.latitude;
+    // API URL
+    let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLong}&appid=6a78d426e59589643788ea1b6371579f`;
+    const kelvin = 273;
 
+	// Calling the API
+	fetch(weatherAPI)
+		.then((response) => response.json())
+		.then((data) => {
+            console.log(data);
+            let temperature = Math.floor(data["main"]["temp"] - kelvin) *1.8 + 32;
+            local_temperature.textContent = "Current Local Temperature: " + temperature  +"°F";
+        });
+}
 const onError = (error) => {
     console.error(error);
 }
@@ -42,6 +50,21 @@ form_btn.addEventListener("submit",(event) => {
                 destinationCoords[1] = result["lon"];
                 
             }
+        } 
+        let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLong}&appid=6a78d426e59589643788ea1b6371579f`;
+        const kelvin = 273;
+
+        // Calling the API
+        fetch(weatherAPI)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                let temperature = Math.floor(data["main"]["temp"] - kelvin) *1.8 + 32;
+                //insert thiz into the left bracket 
+            });
+        })
+    
+}) //what is this closing brace for
         }
 
         //Code to remove carousel
@@ -125,3 +148,4 @@ form_btn.addEventListener("submit",(event) => {
 let currentDate = new Date();
 let currentTime = currentDate.getHours() + ":"  + currentDate.getMinutes();
 document.querySelector("#local_time").textContent =`Local Time: ${currentTime}`;
+
