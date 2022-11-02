@@ -22,6 +22,16 @@ const onError = (error) => {
     
 navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
+//Code used to modify local current time.
+let currentDate = new Date();
+let hour = currentDate.getHours();
+let minutes = currentDate.getMinutes();
+if(minutes < 10){
+    minutes = "0" + minutes;
+}
+let currentTime =  hour + ":"  + minutes;
+document.querySelector("#local_time").textContent =`Local Time: ${currentTime}`;
+
 
 //signup button event
 function addUser(event){
@@ -59,35 +69,22 @@ function addUser(event){
 // login button event
     function loginEvent(event){
     event.preventDefault();
-    
+    debugger;
     let userList = JSON.parse(window.localStorage.getItem("userLists"));
     console.log(userList);
     const uname = document.getElementById("username_login").value;
     const password = document.getElementById("password_login").value;
-    
-    for(let i = 0; i < userList.length; i++){
-        const name = userList[i].fName;
-        
-        if(userList[i].uName == uname){
-            if(userList[i].passWord == password){
-                
-                window.location = "index.html";
-            }
-            else{
-                alert("Your User name does not match your password!");
-            }
-        } 
-        if(userList[i].password == password){
-            if(userList[i].uName == uname){
-                window.location = "index.html";
-            }
-            else{
-                alert("Your User name does not match your password!");
-            }
+
+    for(let i = 0; i <= userList.length; i++){
+
+        if(i !==userList.length && userList[i].uName === uname && userList[i].password === password){  
+            window.location = "index.html";
         }
-    }
-    const greeting = document.querySelector("#menu").createElement("p");
-    
+        if( i === userList.length && userList[i].uName !== uname && userList[i].password !== password){
+            alert("Your User name does not match your password!");
+            window.location = 'login.html';
+        }
+    }          
 }
 
 // using city name and state name to get longitude and latitude
@@ -110,6 +107,7 @@ function addEventToSearchBtn(event){
 
     }
 
+
     fetch(coord_API)
     .then((res) => res.json())
     .then((data) => {
@@ -120,14 +118,13 @@ function addEventToSearchBtn(event){
                 
             }
         } 
-
-         //Code to remove carousel
-        document.querySelector(".carousel").remove();
-
+        //Code to remove carousel
+        // document.querySelector(".carousel").remove();
 
         //Creation of the left side coloumn.
         leftSide = document.createElement("div");
         leftSide.classList.add("col-md-2");
+
         leftSide.textContent = cityName + ", " + stateName;
         leftSide.style.color = "white";                                            //Placeholder for visuals 
         leftSide.style.paddingBottom = "600px";
@@ -142,39 +139,7 @@ function addEventToSearchBtn(event){
         rightSide.style.border = "5px solid red";
         document.querySelector(".row").appendChild(rightSide);
         
-        //Creation of cards
-        cardTemplate = document.createElement("div");
-        cardTemplate.classList.add("cardContainer")
-        cardTemplate.style.width = "18rem";
-        document.querySelector(".col-md-10").appendChild(cardTemplate);
-        
-        const cardImage = document.createElement("img");
-        cardImage.classList.add("card-img-top");
-        cardImage.setAttribute("src", "...");
-        cardImage.setAttribute("alt", "...");
-        document.querySelector(".cardContainer").appendChild(cardImage);
-
-        const cardBody = document.createElement("div");
-        cardBody.classList.add("card-body")
-        document.querySelector(".cardContainer").appendChild(cardBody);
-
-        const cardTitle = document.createElement("h5");
-        cardTitle.classList.add("card-title");
-        cardTitle.textContent = "[Destination Title Variable]";
-        document.querySelector(".card-body").appendChild(cardTitle);
-
-        const cardParagraph = document.createElement("p");
-        cardParagraph.classList.add("card-text");
-        cardParagraph.textContent ="[This should be any dynamically pulled information from the campground api]";
-        document.querySelector(".card-body").appendChild(cardParagraph);
-
-        const linkTag = document.createElement("a");
-        linkTag.classList.add("btn");
-        linkTag.classList.add("btn-primary");
-        linkTag.setAttribute("href", "...");                        //This needs a source
-        linkTag.textContent = "More Information";
-        document.querySelector(".card-body").appendChild(linkTag);
-          //End of the card creation
+       
 
         let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
         const kelvin = 273;
@@ -210,15 +175,44 @@ function addEventToSearchBtn(event){
             timeDiv.textContent = destinationTime;  //Place Weather variable here
             document.querySelector(".col-md-2").appendChild(timeDiv);
         });
+        //Eric code goes here
+        
+         //Creation of cards
+        cardTemplate = document.createElement("div");
+        cardTemplate.classList.add("cardContainer")
+        cardTemplate.style.width = "18rem";
+        document.querySelector(".col-md-10").appendChild(cardTemplate);
+        
+        const cardImage = document.createElement("img");
+        cardImage.classList.add("card-img-top");
+        cardImage.setAttribute("src", "...");
+        cardImage.setAttribute("alt", "...");
+        document.querySelector(".cardContainer").appendChild(cardImage);
 
+        const cardBody = document.createElement("div");
+        cardBody.classList.add("card-body")
+        document.querySelector(".cardContainer").appendChild(cardBody);
+
+        const cardTitle = document.createElement("h5");
+        cardTitle.classList.add("card-title");
+        cardTitle.textContent = "[Destination Title Variable]";
+        document.querySelector(".card-body").appendChild(cardTitle);
+
+        const cardParagraph = document.createElement("p");
+        cardParagraph.classList.add("card-text");
+        cardParagraph.textContent ="[This should be any dynamically pulled information from the campground api]";
+        document.querySelector(".card-body").appendChild(cardParagraph);
+
+        const linkTag = document.createElement("a");
+        linkTag.classList.add("btn");
+        linkTag.classList.add("btn-primary");
+        linkTag.setAttribute("href", "...");                        //This needs a source
+        linkTag.textContent = "More Information";
+        document.querySelector(".card-body").appendChild(linkTag);
+        //End of the card creation
 
     }) //For out fetch
     
-} //For addEventListener    
-
-//Code used to modify local current time.
-let currentDate = new Date();
-let currentTime = currentDate.getHours() + ":"  + currentDate.getMinutes();
-document.querySelector("#local_time").textContent =`Local Time: ${currentTime}`;
+}    
 
 
