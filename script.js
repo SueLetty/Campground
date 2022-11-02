@@ -133,7 +133,7 @@ function addEventToSearchBtn(event){
         //Creation of the right side div which will hold the cards.
         rightSide = document.createElement("div");
         rightSide.classList.add("col-md-10");
-        rightSide.style.color = "white";                                           //Placeholder for visuals  
+        //rightSide.style.color = "white";                                           //Placeholder for visuals  
         rightSide.textContent = "[Destinaions Cards]";
         rightSide.style.paddingBottom = "600px";
         rightSide.style.border = "5px solid red";
@@ -177,42 +177,86 @@ function addEventToSearchBtn(event){
         });
         //Eric code goes here
         
-         //Creation of cards
-        cardTemplate = document.createElement("div");
-        cardTemplate.classList.add("cardContainer")
-        cardTemplate.style.width = "18rem";
-        document.querySelector(".col-md-10").appendChild(cardTemplate);
+        let baseUrl = `https://camp-sight7.herokuapp.com/`;
+        let facilitiesParam = `facilities?`;
+        let neededParam = 'query=Campground&full=true';
+        let offsetLimit = 'limit=10&offset=0'
+        let cityCoordinates = `latitude=${destinationCoords[0]}&longitude=${destinationCoords[1]}`;
+        let radiusMiles = 25;
+        let radiusParam = `radius=${radiusMiles}`;
+        let updateReq = 'lastupdated=10-01-2018';
+        let primaryFetch= baseUrl + `${facilitiesParam}${offsetLimit}&${cityCoordinates}&${radiusParam}&${updateReq}&${neededParam}`;
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+        };
+
+        let imageUrl;
+        let campName;
+        let description;
+
+        let address;
+        let phone;
+        let facilitySite;
+
+        fetch(primaryFetch, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            for(const facility of data.RECDATA){
+                
+                imageUrl = facility.MEDIA[0].URL;
+                campName = facility.FacilityName;
+                description = facility.FacilityDescription;
+                address = facility.FACILITYADDRESS[0].FacilityStreetAddress1; // take whole object and convert to string?
+                phone = facility.FacilityPhone;
+                facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
+                
+                createCard(imageUrl, campName, description, address, phone, facilitySite);
+            }
+        })
+        .catch(error => console.log('error', error));
+
         
-        const cardImage = document.createElement("img");
-        cardImage.classList.add("card-img-top");
-        cardImage.setAttribute("src", "...");
-        cardImage.setAttribute("alt", "...");
-        document.querySelector(".cardContainer").appendChild(cardImage);
-
-        const cardBody = document.createElement("div");
-        cardBody.classList.add("card-body")
-        document.querySelector(".cardContainer").appendChild(cardBody);
-
-        const cardTitle = document.createElement("h5");
-        cardTitle.classList.add("card-title");
-        cardTitle.textContent = "[Destination Title Variable]";
-        document.querySelector(".card-body").appendChild(cardTitle);
-
-        const cardParagraph = document.createElement("p");
-        cardParagraph.classList.add("card-text");
-        cardParagraph.textContent ="[This should be any dynamically pulled information from the campground api]";
-        document.querySelector(".card-body").appendChild(cardParagraph);
-
-        const linkTag = document.createElement("a");
-        linkTag.classList.add("btn");
-        linkTag.classList.add("btn-primary");
-        linkTag.setAttribute("href", "...");                        //This needs a source
-        linkTag.textContent = "More Information";
-        document.querySelector(".card-body").appendChild(linkTag);
-        //End of the card creation
 
     }) //For out fetch
     
 }    
 
+function createCard(imageUrl, campName, description, address, phone, facilitySite) {
+     //Creation of cards
+     const cardTemplate = document.createElement("div");
+     cardTemplate.classList.add("card"); //change from
+     cardTemplate.style.width = "18rem";
+     
+     const cardImage = document.createElement("img");
+     cardImage.classList.add("card-img-top");
+     cardImage.setAttribute("src", imageUrl);
+     cardImage.setAttribute("alt", imageUrl);
+     cardTemplate.appendChild(cardImage);
+     
+     const cardBody = document.createElement("div");
+     cardBody.classList.add("card-body")
+     cardTemplate.appendChild(cardBody);
+     
+     const cardTitle = document.createElement("h5");
+     cardTitle.classList.add("card-title");
+     cardTitle.textContent = campName;
+     cardBody.appendChild(cardTitle);
+     
+     const cardParagraph = document.createElement("p");
+     cardParagraph.classList.add("card-text");
+     cardParagraph.textContent = address;           //information in card
+     cardBody.appendChild(cardParagraph);
+     
+     const linkTag = document.createElement("a");
+     linkTag.classList.add("btn");
+     linkTag.classList.add("btn-primary");
+     linkTag.setAttribute("href", facilitySite);   
+     linkTag.setAttribute("target", '_blank')     
+     linkTag.textContent = "More Information";
+     cardBody.appendChild(linkTag);
+     
+     document.querySelector(".col-md-10").appendChild(cardTemplate);
+}
 
