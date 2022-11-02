@@ -221,3 +221,4 @@ let currentDate = new Date();
 let currentTime = currentDate.getHours() + ":"  + currentDate.getMinutes();
 document.querySelector("#local_time").textContent =`Local Time: ${currentTime}`;
 
+
