@@ -127,17 +127,12 @@ function addEventToSearchBtn(event){
 
         // Calling the API
         fetch(weatherAPI)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                let temperature = Math.floor(data["main"]["temp"] - kelvin) *1.8 + 32;
-                //insert thiz into the left bracket 
-            });
-        })
-    
-}) //what is this closing brace for
-        }
-
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            let temperature = Math.floor(data["main"]["temp"] - kelvin) *1.8 + 32;
+            //insert thiz into the left bracket 
+        });
 
         //Code to remove carousel
         document.querySelector(".carousel").remove();
@@ -214,7 +209,7 @@ function addEventToSearchBtn(event){
 
     }) //For out fetch
     
-}) //For addEventListener    
+} //For addEventListener    
 
 //Code used to modify local current time.
 let currentDate = new Date();
