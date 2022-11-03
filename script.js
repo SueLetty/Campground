@@ -262,9 +262,8 @@ function addEventToSearchBtn(event) {
                 imageUrl = facility.MEDIA[0].URL;
                 campName = facility.FacilityName;
                 description = facility.FacilityDescription;
-                address = facility.FACILITYADDRESS[0].FacilityStreetAddress1; // take whole object and convert to string?
+                address = addressToString(facility.FACILITYADDRESS[0]);
                 phone = facility.FacilityPhone;
-                //facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
                 facilitySite = facility.FacilityID;
 
                 createCard(imageUrl, campName, description, address, phone, facilitySite);
@@ -314,4 +313,33 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      cardBody.appendChild(linkTag);
      
      document.querySelector(".col-md-10").appendChild(cardTemplate);
+}
+
+function addressToString(address) {
+  let newAddress = "";
+  for(const key in address){
+    if(key === 'FacilityStreetAddress1'){
+      if(newAddress === ""){
+        if(address[key] != ""){
+          newAddress = `${address[key]}\n`;
+        }
+      }
+    }
+    if(key === 'FacilityStreetAddress2'){
+      if(address[key] != ""){
+        newAddress = newAddress + `${address[key]}\n`;
+      }
+    }
+    if(key === 'FacilityStreetAddress3'){
+      if(address[key] != ""){
+        newAddress = newAddress +`${address[key]}\n`;
+      }
+    }
+    if(key === 'PostalCode'){
+      if(address[key] != ""){
+        newAddress = newAddress +`${address[key]}\n`;
+      }
+    }
+  }
+  return newAddress;
 }
