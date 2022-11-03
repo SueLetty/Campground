@@ -90,10 +90,12 @@ function loginEvent(event) {
   }
 }
 
+let deleteCounter = 0;
 // using city name and state name to get longitude and latitude
 function addEventToSearchBtn(event) {
- 
  event.preventDefault();
+
+ deleteCounter++;
 
   //use this to call your API index 0 is latitude, index 1 is longitude
   let destinationCoords = [];
@@ -128,8 +130,12 @@ function addEventToSearchBtn(event) {
         } 
         //Code to remove carousel
         const carouselRemoval = document.getElementById("carouselExampleCaptions");
-        carouselRemoval.parentElement.removeChild(carouselRemoval);
-        //document.querySelector(".carousel").remove();
+      
+        if(deleteCounter === 1) {
+          carouselRemoval.parentElement.removeChild(carouselRemoval);
+        }
+
+
 
         //Creation of the left side coloumn.
         leftSide = document.querySelector(".col-md-2");
@@ -139,13 +145,26 @@ function addEventToSearchBtn(event) {
         leftSide.style.paddingBottom = "600px";
         document.querySelector(".row").appendChild(leftSide);
 
+        let leftTitle = document.createElement("h2");
+        leftTitle.style.color = "white";
+        leftTitle.style.display = "flex";
+        leftTitle.style.justifyContent = "center";
+        leftTitle.textContent = "Available Campgrounds"
+
+
         //Creation of the right side div which will hold the cards.
         rightSide = document.querySelector(".col-md-10");
         //rightSide.style.color = "white";                                           //Placeholder for visuals  
-        rightSide.textContent = "[Destinaions Cards]";
+        //rightSide.textContent = "[Destinaions Cards]";
         rightSide.style.paddingBottom = "600px";
         rightSide.style.border = "5px solid red";
         document.querySelector(".row").appendChild(rightSide);
+        
+        //Flag to only add the Title once.
+        if(deleteCounter === 1) {
+          rightSide.appendChild(leftTitle);
+        }
+        
         
        
 
