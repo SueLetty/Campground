@@ -229,8 +229,9 @@ function addEventToSearchBtn(event) {
                 description = facility.FacilityDescription;
                 address = facility.FACILITYADDRESS[0].FacilityStreetAddress1; // take whole object and convert to string?
                 phone = facility.FacilityPhone;
-                facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
-                
+                //facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
+                facilitySite = facility.FacilityID;
+
                 createCard(imageUrl, campName, description, address, phone, facilitySite);
             }
         })
@@ -271,7 +272,7 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      const linkTag = document.createElement("a");
      linkTag.classList.add("btn");
      linkTag.classList.add("btn-primary");
-     linkTag.setAttribute("href", facilitySite);   
+     linkTag.setAttribute("href", `https://www.recreation.gov/camping/campgrounds/${facilitySite}`);   
      linkTag.setAttribute("target", '_blank')     
      linkTag.textContent = "More Information";
      cardBody.appendChild(linkTag);
