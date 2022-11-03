@@ -98,9 +98,9 @@ function addEventToSearchBtn(event) {
   let destinationCoords = [];
   const inputCity = city.value;
   const inputState = state.value;
-  const cityName =
+  let cityName =
     inputCity.charAt(0).toUpperCase() + inputCity.substring(1).toLowerCase();
-  const stateName =
+  let stateName =
     inputState.charAt(0).toUpperCase() + inputState.substring(1).toLowerCase();
   let newCityName;
 
@@ -109,58 +109,71 @@ function addEventToSearchBtn(event) {
   let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
   if (cityName.includes(" ")) {
+    const index = cityName.indexOf(" ");
+    cityName =
+      inputCity.charAt(0).toUpperCase() +
+      inputCity.substring(1, index + 1).toLowerCase() +
+      inputCity.charAt(index + 1).toUpperCase() +
+      inputCity.substring(index + 2).toLowerCase();
     newCityName = cityName.replace(" ", "%20");
     coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
+  }
+
+  if (stateName.includes(" ")) {
+    const index = stateName.indexOf(" ");
+    stateName =
+      inputState.charAt(0).toUpperCase() +
+      inputState.substring(1, index + 1).toLowerCase() +
+      inputState.charAt(index + 1).toUpperCase() +
+      inputState.substring(index + 2).toLowerCase();
   }
 
   fetch(coord_API)
     .then((res) => res.json())
     .then((data) => {
+      for (const result of data) {
+        if (result["name"] === cityName && result["state"] === stateName) {
+          destinationCoords[0] = result["lat"];
+          destinationCoords[1] = result["lon"];
+        }
+      }
+      //Code to remove carousel
+      // document.querySelector(".carousel").remove();
 
-        for(const result of data){
-            if(result["name"] === cityName && result["state"] === stateName){
-                destinationCoords[0] = result["lat"]
-                destinationCoords[1] = result["lon"];
-                
-            }
-        } 
-        //Code to remove carousel
-        // document.querySelector(".carousel").remove();
+      //Creation of the left side coloumn.
+      leftSide = document.createElement("div");
+      leftSide.classList.add("col-md-2");
+      leftSide.style.color = "white"; //Placeholder for visuals
+      leftSide.style["font-size"] = "30px";
+      leftSide.style.width = "850px";
+      leftSide.textContent = cityName + ", " + stateName;
+      document.querySelector(".row").appendChild(leftSide);
 
-        //Creation of the left side coloumn.
-        leftSide = document.createElement("div");
-        leftSide.classList.add("col-md-2");
+      //Creation of the right side div which will hold the cards.
+      rightSide = document.createElement("div");
+      rightSide.classList.add("col-md-10");
+      rightSide.style.paddingBottom = "50px";
+      rightSide.style.height = "80 vh";
+      rightSide.style.display = "flex";
+      rightSide.style.flexWrap = "wrap";
+      rightSide.style.flexDirection = "row";
+      rightSide.style["justify-content"] = "start";
+      document.querySelector(".row").appendChild(rightSide);
 
-        leftSide.textContent = cityName + ", " + stateName;
-        leftSide.style.color = "white";                                            //Placeholder for visuals 
-        leftSide.style.paddingBottom = "600px";
-        document.querySelector(".row").appendChild(leftSide);
+      let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
+      const kelvin = 273;
 
-        //Creation of the right side div which will hold the cards.
-        rightSide = document.createElement("div");
-        rightSide.classList.add("col-md-10");
-        //rightSide.style.color = "white";                                           //Placeholder for visuals  
-        rightSide.textContent = "[Destinaions Cards]";
-        rightSide.style.paddingBottom = "600px";
-        rightSide.style.border = "5px solid red";
-        document.querySelector(".row").appendChild(rightSide);
-        
-       
-
-        let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
-        const kelvin = 273;
-
-        // Calling the API
-        fetch(weatherAPI)
+      // Calling the API
+      fetch(weatherAPI)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           let temperature =
-            Math.floor(data["main"]["temp"] - kelvin) * 1.8 + 32;
+            Math.floor((data["main"]["temp"] - kelvin) * 1.8) + 32;
           let lowTemp =
-            Math.floor(data["main"]["temp_min"] - kelvin) * 1.8 + 32;
+            Math.floor((data["main"]["temp_min"] - kelvin) * 1.8) + 32;
           let highTemp =
-            Math.floor(data["main"]["temp_max"] - kelvin) * 1.8 + 32;
+            Math.floor((data["main"]["temp_max"] - kelvin) * 1.8) + 32;
           //insert thiz into the left bracket
           //Creation of the div within the left side column.
           weatherDiv = document.createElement("div");
@@ -169,7 +182,8 @@ function addEventToSearchBtn(event) {
             "Current Temp: " +
             temperature +
             "°F" +
-            "          Low: " +
+            "          " +
+            "Low: " +
             lowTemp +
             "°F" +
             "\n High: " +
@@ -184,94 +198,107 @@ function addEventToSearchBtn(event) {
       fetch(userUrl)
         .then((res) => res.json())
         .then((data) => {
-            const destinationTime = data.date_time;
+          const destinationTime = data.date_time;
 
-            //Creation of the div within the left side column.
-            timeDiv = document.createElement("div");
-            timeDiv.setAttribute("id", "time_div");            
-            timeDiv.textContent = destinationTime;  //Place Weather variable here
-            document.querySelector(".col-md-2").appendChild(timeDiv);
+          //Creation of the div within the left side column.
+          timeDiv = document.createElement("div");
+          timeDiv.setAttribute("id", "time_div");
+          timeDiv.textContent = destinationTime; //Place Weather variable here
+          document.querySelector(".col-md-2").appendChild(timeDiv);
         });
-        
-        let baseUrl = `https://camp-sight7.herokuapp.com/`;
-        let facilitiesParam = `facilities?`;
-        let neededParam = 'query=Campground&full=true';
-        let offsetLimit = 'limit=10&offset=0'
-        let cityCoordinates = `latitude=${destinationCoords[0]}&longitude=${destinationCoords[1]}`;
-        let radiusMiles = 25;
-        let radiusParam = `radius=${radiusMiles}`;
-        let updateReq = 'lastupdated=10-01-2018';
-        let primaryFetch= baseUrl + `${facilitiesParam}${offsetLimit}&${cityCoordinates}&${radiusParam}&${updateReq}&${neededParam}`;
 
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow',
-        };
+      let baseUrl = `https://camp-sight7.herokuapp.com/`;
+      let facilitiesParam = `facilities?`;
+      let neededParam = "query=Campground&full=true";
+      let offsetLimit = "limit=10&offset=0";
+      let cityCoordinates = `latitude=${destinationCoords[0]}&longitude=${destinationCoords[1]}`;
+      let radiusMiles = 25;
+      let radiusParam = `radius=${radiusMiles}`;
+      let updateReq = "lastupdated=10-01-2018";
+      let primaryFetch =
+        baseUrl +
+        `${facilitiesParam}${offsetLimit}&${cityCoordinates}&${radiusParam}&${updateReq}&${neededParam}`;
 
-        let imageUrl;
-        let campName;
-        let description;
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
 
-        let address;
-        let phone;
-        let facilitySite;
+      let imageUrl;
+      let campName;
+      let description;
 
-        fetch(primaryFetch, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            for(const facility of data.RECDATA){
-                
-                imageUrl = facility.MEDIA[0].URL;
-                campName = facility.FacilityName;
-                description = facility.FacilityDescription;
-                address = facility.FACILITYADDRESS[0].FacilityStreetAddress1; // take whole object and convert to string?
-                phone = facility.FacilityPhone;
-                facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
-                
-                createCard(imageUrl, campName, description, address, phone, facilitySite);
-            }
+      let address;
+      let phone;
+      let facilitySite;
+
+      fetch(primaryFetch, requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          for (const facility of data.RECDATA) {
+            imageUrl = facility.MEDIA[0].URL;
+            campName = facility.FacilityName;
+            description = facility.FacilityDescription;
+            address = facility.FACILITYADDRESS[0].FacilityStreetAddress1; // take whole object and convert to string?
+            phone = facility.FacilityPhone;
+            facilitySite = facility.ORGANIZATION[0].OrgURLAddress; //possible change for different address within object or diff api
+
+            createCard(
+              imageUrl,
+              campName,
+              description,
+              address,
+              phone,
+              facilitySite
+            );
+          }
         })
-        .catch(error => console.log('error', error));
+        .catch((error) => console.log("error", error));
+    }); //For out fetchZ
+}
 
-        
+function createCard(
+  imageUrl,
+  campName,
+  description,
+  address,
+  phone,
+  facilitySite
+) {
+  //Creation of cards
+  const cardTemplate = document.createElement("div");
+  cardTemplate.classList.add("card"); //change from
+  cardTemplate.style.width = "18rem";
 
-    }) //For out fetch
-    
-}    
+  const cardImage = document.createElement("img");
+  cardImage.classList.add("card-img-top");
+  cardImage.setAttribute("src", imageUrl);
+  cardImage.setAttribute("alt", imageUrl);
+  cardImage.style.height = "250px";
+  cardImage.style.width = "285px";
+  cardTemplate.appendChild(cardImage);
 
-function createCard(imageUrl, campName, description, address, phone, facilitySite) {
-     //Creation of cards
-     const cardTemplate = document.createElement("div");
-     cardTemplate.classList.add("card"); //change from
-     cardTemplate.style.width = "18rem";
-     
-     const cardImage = document.createElement("img");
-     cardImage.classList.add("card-img-top");
-     cardImage.setAttribute("src", imageUrl);
-     cardImage.setAttribute("alt", imageUrl);
-     cardTemplate.appendChild(cardImage);
-     
-     const cardBody = document.createElement("div");
-     cardBody.classList.add("card-body")
-     cardTemplate.appendChild(cardBody);
-     
-     const cardTitle = document.createElement("h5");
-     cardTitle.classList.add("card-title");
-     cardTitle.textContent = campName;
-     cardBody.appendChild(cardTitle);
-     
-     const cardParagraph = document.createElement("p");
-     cardParagraph.classList.add("card-text");
-     cardParagraph.textContent = address;           //information in card
-     cardBody.appendChild(cardParagraph);
-     
-     const linkTag = document.createElement("a");
-     linkTag.classList.add("btn");
-     linkTag.classList.add("btn-primary");
-     linkTag.setAttribute("href", facilitySite);   
-     linkTag.setAttribute("target", '_blank')     
-     linkTag.textContent = "More Information";
-     cardBody.appendChild(linkTag);
-     
-     document.querySelector(".col-md-10").appendChild(cardTemplate);
+  const cardBody = document.createElement("div");
+  cardBody.classList.add("card-body");
+  cardTemplate.appendChild(cardBody);
+
+  const cardTitle = document.createElement("h5");
+  cardTitle.classList.add("card-title");
+  cardTitle.textContent = campName;
+  cardBody.appendChild(cardTitle);
+
+  const cardParagraph = document.createElement("p");
+  cardParagraph.classList.add("card-text");
+  cardParagraph.textContent = address; //information in card
+  cardBody.appendChild(cardParagraph);
+
+  const linkTag = document.createElement("a");
+  linkTag.classList.add("btn");
+  linkTag.classList.add("btn-primary");
+  linkTag.setAttribute("href", facilitySite);
+  linkTag.setAttribute("target", "_blank");
+  linkTag.textContent = "More Information";
+  cardBody.appendChild(linkTag);
+
+  document.querySelector(".col-md-10").appendChild(cardTemplate);
 }
