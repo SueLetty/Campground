@@ -4,7 +4,7 @@ const onSuccess = (position) => {
   let userLong = position.coords.longitude;
   let userLat = position.coords.latitude;
   // API URL
-  let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLong}&appid=6a78d426e59589643788ea1b6371579f`;
+  let weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLong}&appid=6a78d426e59589643788ea1b6371579f`;
   const kelvin = 273;
 
   // Calling the API
@@ -122,7 +122,7 @@ function addEventToSearchBtn(event) {
 
   document.getElementById("form_btn").reset();
 
-  let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
+  let coord_API = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
   if (cityName.includes(" ")) {
     const index = cityName.indexOf(" ");
@@ -132,7 +132,7 @@ function addEventToSearchBtn(event) {
       inputCity.charAt(index + 1).toUpperCase() +
       inputCity.substring(index + 2).toLowerCase();
     newCityName = cityName.replace(" ", "%20");
-    coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
+    coord_API = `https://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
   }
 
   if (stateName.includes(" ")) {
