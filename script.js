@@ -183,7 +183,7 @@ function addEventToSearchBtn(event) {
       //Flag to only add the right title once.
       rightSide.appendChild(rightTitle);
 
-      let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
+      let weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
       const kelvin = 273;
 
       // Calling the API
