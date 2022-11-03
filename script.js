@@ -23,6 +23,18 @@ const onError = (error) => {
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
+if (!!localStorage.getItem("currentUser")) {
+  document.getElementById("greeting").innerText =
+    "Hello, " + JSON.parse(localStorage.getItem("currentUser")).uName;
+  debugger;
+  //   if (
+  //     document.getElementById("login") &&
+  //     document.getElementById.innerText === "Login"
+  //   ) {
+  document.querySelector("#login").textContent = "Logout";
+  //   }
+}
+
 //Code used to modify local current time.
 let currentDate = new Date();
 let hour = currentDate.getHours();
@@ -80,6 +92,7 @@ function loginEvent(event) {
   for (let i = 0; i < userList.length; i++) {
     if (userList[i].uName === uname && userList[i].password === password) {
       flag = true;
+      localStorage.setItem("currentUser", JSON.stringify(userList[i]));
       window.location = "index.html";
     }
   }
