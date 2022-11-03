@@ -279,7 +279,6 @@ function addEventToSearchBtn(event) {
         let address;
         let phone;
         let facilitySite;
-        
 
         //Fetch to get the campground informatin
         fetch(primaryFetch, requestOptions)
@@ -295,7 +294,7 @@ function addEventToSearchBtn(event) {
                 phone = facility.FacilityPhone;
                 facilitySite = facility.FacilityID;
 
-                createCard(imageUrl, campName, description, address, phone, facilitySite);
+                createCard(imageUrl, campName, address, facilitySite);
             }
         })
         .catch(error => console.log('error', error));
@@ -306,10 +305,10 @@ function addEventToSearchBtn(event) {
     
 }    
 
-function createCard(imageUrl, campName, description, address, phone, facilitySite) {
+function createCard(imageUrl, campName, address, facilitySite) {
      //Creation of cards
      const cardTemplate = document.createElement("div");
-     cardTemplate.classList.add("card"); //change from
+     cardTemplate.classList.add("card");
      cardTemplate.setAttribute("id", "cardId")
      cardTemplate.style.width = "18rem";
      cardTemplate.style.margin = "5px";
@@ -333,7 +332,7 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      
      const cardParagraph = document.createElement("p");
      cardParagraph.classList.add("card-text");
-     cardParagraph.textContent = address;           //information in card
+     cardParagraph.textContent = address;
      cardBody.appendChild(cardParagraph);
      
      const linkTag = document.createElement("a");
@@ -350,29 +349,37 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
 
 function addressToString(address) {
   let newAddress = "";
-  for(const key in address){
-    if(key === 'FacilityStreetAddress1'){
-      if(newAddress === ""){
-        if(address[key] != ""){
-          newAddress = `${address[key]}\n`;
-        }
-      }
-    }
-    if(key === 'FacilityStreetAddress2'){
-      if(address[key] != ""){
-        newAddress = newAddress + `${address[key]}\n`;
-      }
-    }
-    if(key === 'FacilityStreetAddress3'){
-      if(address[key] != ""){
-        newAddress = newAddress +`${address[key]}\n`;
-      }
-    }
-    if(key === 'PostalCode'){
-      if(address[key] != ""){
-        newAddress = newAddress +`${address[key]}\n`;
-      }
-    }
-  }
+  let addressArray = [];
+
+  addressArray.push(address.FacilityStreetAddress1);
+  addressArray.push(address.FacilityStreetAddress2);
+  addressArray.push(address.FacilityStreetAddress3);
+  addressArray.push(address.City);
+  addressArray.push(address.AddressStateCode);
+  addressArray.push(address.PostalCode);
+
+  newAddress = formatAddress(addressArray);
+
   return newAddress;
+}
+
+function formatAddress(addressArray){
+  let result = "";
+  formatIndicator = 0;
+
+  for(const value of addressArray){
+    if(result === ""){
+      if(value != ""){
+        result = `${value}\n`;
+      }
+    }
+    if(value != "" && formatIndicator > 0 && formatIndicator < 3){
+      result = result + `${value}\n`;
+    }
+    if(value != "" && formatIndicator >= 3){
+      result = result + `${value} `;
+    }
+    formatIndicator++;
+  }
+  return result;
 }
