@@ -92,7 +92,8 @@ function loginEvent(event) {
 
 // using city name and state name to get longitude and latitude
 function addEventToSearchBtn(event) {
-  event.preventDefault();
+ 
+ event.preventDefault();
 
   //use this to call your API index 0 is latitude, index 1 is longitude
   let destinationCoords = [];
@@ -105,7 +106,7 @@ function addEventToSearchBtn(event) {
   let newCityName;
 
   document.getElementById("form_btn").reset();
-
+  
   let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
   if (cityName.includes(" ")) {
@@ -119,17 +120,19 @@ function addEventToSearchBtn(event) {
 
         for(const result of data){
             if(result["name"] === cityName && result["state"] === stateName){
+
                 destinationCoords[0] = result["lat"]
                 destinationCoords[1] = result["lon"];
                 
             }
         } 
         //Code to remove carousel
-        // document.querySelector(".carousel").remove();
+        const carouselRemoval = document.getElementById("carouselExampleCaptions");
+        carouselRemoval.parentElement.removeChild(carouselRemoval);
+        //document.querySelector(".carousel").remove();
 
         //Creation of the left side coloumn.
-        leftSide = document.createElement("div");
-        leftSide.classList.add("col-md-2");
+        leftSide = document.querySelector(".col-md-2");
 
         leftSide.textContent = cityName + ", " + stateName;
         leftSide.style.color = "white";                                            //Placeholder for visuals 
@@ -137,8 +140,7 @@ function addEventToSearchBtn(event) {
         document.querySelector(".row").appendChild(leftSide);
 
         //Creation of the right side div which will hold the cards.
-        rightSide = document.createElement("div");
-        rightSide.classList.add("col-md-10");
+        rightSide = document.querySelector(".col-md-10");
         //rightSide.style.color = "white";                                           //Placeholder for visuals  
         rightSide.textContent = "[Destinaions Cards]";
         rightSide.style.paddingBottom = "600px";
@@ -219,6 +221,7 @@ function addEventToSearchBtn(event) {
         fetch(primaryFetch, requestOptions)
         .then(response => response.json())
         .then(data => {
+          console.log(data);
             for(const facility of data.RECDATA){
                 
                 imageUrl = facility.MEDIA[0].URL;
