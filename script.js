@@ -26,13 +26,7 @@ navigator.geolocation.getCurrentPosition(onSuccess, onError);
 if (!!localStorage.getItem("currentUser")) {
   document.getElementById("greeting").innerText =
     "Hello, " + JSON.parse(localStorage.getItem("currentUser")).uName;
-  debugger;
-  //   if (
-  //     document.getElementById("login") &&
-  //     document.getElementById.innerText === "Login"
-  //   ) {
   document.querySelector("#login").textContent = "Logout";
-  //   }
 }
 
 //Code used to modify local current time.
@@ -315,6 +309,7 @@ function createCard(imageUrl, campName, address, facilitySite) {
     `https://www.recreation.gov/camping/campgrounds/${facilitySite}`
   );
   linkTag.setAttribute("target", "_blank");
+  linkTag.style.position = "fixed";
   linkTag.textContent = "More Information";
   cardBody.appendChild(linkTag);
 
