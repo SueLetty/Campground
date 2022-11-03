@@ -102,7 +102,7 @@ var deleteCounter = 0;
 function addEventToSearchBtn(event) {
   event.preventDefault();
 
-  document.getElementById(".card-container").innerHTML = "";
+  document.querySelector(".card-container").innerHTML = "";
   deleteCounter++;
 
   //use this to call your API index 0 is latitude, index 1 is longitude
