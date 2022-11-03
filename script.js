@@ -18,6 +18,7 @@ const onSuccess = (position) => {
     });
 };
 const onError = (error) => {
+  alert("Unable to get location");
   console.error(error);
 };
 
