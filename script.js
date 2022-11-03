@@ -26,13 +26,7 @@ navigator.geolocation.getCurrentPosition(onSuccess, onError);
 if (!!localStorage.getItem("currentUser")) {
   document.getElementById("greeting").innerText =
     "Hello, " + JSON.parse(localStorage.getItem("currentUser")).uName;
-  debugger;
-  //   if (
-  //     document.getElementById("login") &&
-  //     document.getElementById.innerText === "Login"
-  //   ) {
   document.querySelector("#login").textContent = "Logout";
-  //   }
 }
 
 //Code used to modify local current time.
@@ -122,7 +116,7 @@ function addEventToSearchBtn(event) {
 
   document.getElementById("form_btn").reset();
 
-  let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
+  let coord_API = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
   if (cityName.includes(" ")) {
     const index = cityName.indexOf(" ");
@@ -183,7 +177,7 @@ function addEventToSearchBtn(event) {
       //Flag to only add the right title once.
       rightSide.appendChild(rightTitle);
 
-      let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
+      let weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
       const kelvin = 273;
 
       // Calling the API
@@ -315,6 +309,7 @@ function createCard(imageUrl, campName, address, facilitySite) {
     `https://www.recreation.gov/camping/campgrounds/${facilitySite}`
   );
   linkTag.setAttribute("target", "_blank");
+  linkTag.style.position = "fixed";
   linkTag.textContent = "More Information";
   cardBody.appendChild(linkTag);
 
