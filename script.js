@@ -229,143 +229,134 @@ function addEventToSearchBtn(event) {
           timeDiv.textContent = destinationTime; //Place Weather variable here
           document.querySelector(".col-md-2").appendChild(timeDiv);
         });
+        
+        //Variables for the campground fetch.
+        let baseUrl = `https://camp-sight7.herokuapp.com/`;
+        let facilitiesParam = `facilities?`;
+        let neededParam = 'query=Campground&full=true';
+        let offsetLimit = 'limit=10&offset=0'
+        let cityCoordinates = `latitude=${destinationCoords[0]}&longitude=${destinationCoords[1]}`;
+        let radiusMiles = 25;
+        let radiusParam = `radius=${radiusMiles}`;
+        let updateReq = 'lastupdated=10-01-2018';
+        let primaryFetch= baseUrl + `${facilitiesParam}${offsetLimit}&${cityCoordinates}&${radiusParam}&${updateReq}&${neededParam}`;
 
-      //Variables for the campground fetch.
-      let baseUrl = `https://camp-sight7.herokuapp.com/`;
-      let facilitiesParam = `facilities?`;
-      let neededParam = "query=Campground&full=true";
-      let offsetLimit = "limit=10&offset=0";
-      let cityCoordinates = `latitude=${destinationCoords[0]}&longitude=${destinationCoords[1]}`;
-      let radiusMiles = 25;
-      let radiusParam = `radius=${radiusMiles}`;
-      let updateReq = "lastupdated=10-01-2018";
-      let primaryFetch =
-        baseUrl +
-        `${facilitiesParam}${offsetLimit}&${cityCoordinates}&${radiusParam}&${updateReq}&${neededParam}`;
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+        };
 
-      var requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
+        let imageUrl;
+        let campName;
+        let description;
 
-      let imageUrl;
-      let campName;
-      let description;
+        let address;
+        let phone;
+        let facilitySite;
 
-      let address;
-      let phone;
-      let facilitySite;
-
-      //Fetch to get the campground informatin
-      fetch(primaryFetch, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
+        //Fetch to get the campground informatin
+        fetch(primaryFetch, requestOptions)
+        .then(response => response.json())
+        .then(data => {
           console.log(data);
-          for (const facility of data.RECDATA) {
-            imageUrl = facility.MEDIA[0].URL;
-            campName = facility.FacilityName;
-            description = facility.FacilityDescription;
-            address = addressToString(facility.FACILITYADDRESS[0]);
-            phone = facility.FacilityPhone;
-            facilitySite = facility.FacilityID;
+            for(const facility of data.RECDATA){
+                
+                imageUrl = facility.MEDIA[0].URL;
+                campName = facility.FacilityName;
+                description = facility.FacilityDescription;
+                address = addressToString(facility.FACILITYADDRESS[0]);
+                phone = facility.FacilityPhone;
+                facilitySite = facility.FacilityID;
 
-            createCard(
-              imageUrl,
-              campName,
-              description,
-              address,
-              phone,
-              facilitySite
-            );
-            const div = document.querySelector("div");
-            if (div.classList.contains("card")) {
-              rightTitle.texContent = "No Campground available";
+                createCard(imageUrl, campName, address, facilitySite);
             }
             // else {
             //   rightTitle.textContent = "Available Campgrounds";
             // }
           }
         })
+
         .catch((error) => console.log("error", error));
     }); //For out fetch
 }
+    
+function createCard(imageUrl, campName, address, facilitySite) {
+     //Creation of cards
+     const cardTemplate = document.createElement("div");
+     cardTemplate.classList.add("card");
+     cardTemplate.setAttribute("id", "cardId")
+     cardTemplate.style.width = "18rem";
+     cardTemplate.style.margin = "5px";
 
-function createCard(
-  imageUrl,
-  campName,
-  description,
-  address,
-  phone,
-  facilitySite
-) {
-  //Creation of cards
-  const cardTemplate = document.createElement("div");
-  cardTemplate.classList.add("card"); //change from
-  cardTemplate.setAttribute("id", "cardId");
-  cardTemplate.style.width = "18rem";
-  cardTemplate.style.margin = "5px";
+     const cardImage = document.createElement("img");
+     cardImage.classList.add("card-img-top");
+     cardImage.setAttribute("src", imageUrl);
+     cardImage.setAttribute("alt", imageUrl);
+     cardImage.style.height = "250px";
+     cardImage.style.width = "285px";
+     cardTemplate.appendChild(cardImage);
+     
+     const cardBody = document.createElement("div");
+     cardBody.classList.add("card-body")
+     cardTemplate.appendChild(cardBody);
+     
+     const cardTitle = document.createElement("h5");
+     cardTitle.classList.add("card-title");
+     cardTitle.textContent = campName;
+     cardBody.appendChild(cardTitle);
+     
+     const cardParagraph = document.createElement("p");
+     cardParagraph.classList.add("card-text");
+     cardParagraph.textContent = address;
+     cardBody.appendChild(cardParagraph);
+     
+     const linkTag = document.createElement("a");
+     linkTag.classList.add("btn");
+     linkTag.classList.add("btn-primary");
+     linkTag.setAttribute("href", `https://www.recreation.gov/camping/campgrounds/${facilitySite}`);   
+     linkTag.setAttribute("target", '_blank')     
+     linkTag.textContent = "More Information";
+     cardBody.appendChild(linkTag);
+     
+     document.querySelector(".col-md-10").appendChild(cardTemplate);
 
-  const cardImage = document.createElement("img");
-  cardImage.classList.add("card-img-top");
-  cardImage.setAttribute("src", imageUrl);
-  cardImage.setAttribute("alt", imageUrl);
-  cardImage.style.height = "250px";
-  cardImage.style.width = "285px";
-  cardTemplate.appendChild(cardImage);
 
-  const cardBody = document.createElement("div");
-  cardBody.classList.add("card-body");
-  cardTemplate.appendChild(cardBody);
-
-  const cardTitle = document.createElement("h5");
-  cardTitle.classList.add("card-title");
-  cardTitle.textContent = campName;
-  cardBody.appendChild(cardTitle);
-
-  const cardParagraph = document.createElement("p");
-  cardParagraph.classList.add("card-text");
-  cardParagraph.textContent = address; //information in card
-  cardBody.appendChild(cardParagraph);
-
-  const linkTag = document.createElement("a");
-  linkTag.classList.add("btn");
-  linkTag.classList.add("btn-primary");
-  linkTag.setAttribute(
-    "href",
-    `https://www.recreation.gov/camping/campgrounds/${facilitySite}`
-  );
-  linkTag.setAttribute("target", "_blank");
-  linkTag.textContent = "More Information";
-  cardBody.appendChild(linkTag);
-
-  document.querySelector(".col-md-10").appendChild(cardTemplate);
-}
 
 function addressToString(address) {
   let newAddress = "";
-  for (const key in address) {
-    if (key === "FacilityStreetAddress1") {
-      if (newAddress === "") {
-        if (address[key] != "") {
-          newAddress = `${address[key]}\n`;
-        }
-      }
-    }
-    if (key === "FacilityStreetAddress2") {
-      if (address[key] != "") {
-        newAddress = newAddress + `${address[key]}\n`;
-      }
-    }
-    if (key === "FacilityStreetAddress3") {
-      if (address[key] != "") {
-        newAddress = newAddress + `${address[key]}\n`;
-      }
-    }
-    if (key === "PostalCode") {
-      if (address[key] != "") {
-        newAddress = newAddress + `${address[key]}\n`;
-      }
-    }
-  }
+
+  let addressArray = [];
+
+  addressArray.push(address.FacilityStreetAddress1);
+  addressArray.push(address.FacilityStreetAddress2);
+  addressArray.push(address.FacilityStreetAddress3);
+  addressArray.push(address.City);
+  addressArray.push(address.AddressStateCode);
+  addressArray.push(address.PostalCode);
+
+  newAddress = formatAddress(addressArray);
+
   return newAddress;
 }
+
+function formatAddress(addressArray){
+  let result = "";
+  formatIndicator = 0;
+
+  for(const value of addressArray){
+    if(result === ""){
+      if(value != ""){
+        result = `${value}\n`;
+      }
+    }
+    if(value != "" && formatIndicator > 0 && formatIndicator < 3){
+      result = result + `${value}\n`;
+    }
+    if(value != "" && formatIndicator >= 3){
+      result = result + `${value} `;
+    }
+    formatIndicator++;
+  }
+  return result;
+}
+
