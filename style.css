@@ -42,17 +42,25 @@ header{
     align-items: center;
     font-size: 24px;
 }
-.container,.row{
-    width: 1500px;
-    justify-content: center;
+
+.col-md-2{
+    color: white;
+    font-size: 20px;
 }
 
+.col-md-10{
+    padding-bottom: 50px;
+    height: 80 vh;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: start;
+}
 label{
     color: white;
 }
 
 #login_form, #signup_form{
-
     margin-top: 1px;
     height: 75vh;
     max-width: 100vw;

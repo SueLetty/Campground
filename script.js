@@ -140,25 +140,7 @@ function addEventToSearchBtn(event) {
       //Code to remove carousel
       // document.querySelector(".carousel").remove();
 
-      //Creation of the left side coloumn.
-      leftSide = document.createElement("div");
-      leftSide.classList.add("col-md-2");
-      leftSide.style.color = "white"; //Placeholder for visuals
-      leftSide.style["font-size"] = "30px";
-      leftSide.style.width = "850px";
       leftSide.textContent = cityName + ", " + stateName;
-      document.querySelector(".row").appendChild(leftSide);
-
-      //Creation of the right side div which will hold the cards.
-      rightSide = document.createElement("div");
-      rightSide.classList.add("col-md-10");
-      rightSide.style.paddingBottom = "50px";
-      rightSide.style.height = "80 vh";
-      rightSide.style.display = "flex";
-      rightSide.style.flexWrap = "wrap";
-      rightSide.style.flexDirection = "row";
-      rightSide.style["justify-content"] = "start";
-      document.querySelector(".row").appendChild(rightSide);
 
       let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
       const kelvin = 273;
@@ -269,6 +251,7 @@ function createCard(
   const cardTemplate = document.createElement("div");
   cardTemplate.classList.add("card"); //change from
   cardTemplate.style.width = "18rem";
+  cardTemplate.style.margin = "5px";
 
   const cardImage = document.createElement("img");
   cardImage.classList.add("card-img-top");
