@@ -106,13 +106,10 @@ function loginEvent(event) {
 var deleteCounter = 0;
 // using city name and state name to get longitude and latitude
 function addEventToSearchBtn(event) {
- event.preventDefault();
+  event.preventDefault();
 
- deleteCounter++;
+  deleteCounter++;
 
- 
- document.querySelector(".card-container").innerHTML = "No Campground available";
- debugger;
   //use this to call your API index 0 is latitude, index 1 is longitude
   let destinationCoords = [];
   const inputCity = city.value;
@@ -124,7 +121,7 @@ function addEventToSearchBtn(event) {
   let newCityName;
 
   document.getElementById("form_btn").reset();
-  
+
   let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
   if (cityName.includes(" ")) {
@@ -150,70 +147,47 @@ function addEventToSearchBtn(event) {
   fetch(coord_API)
     .then((res) => res.json())
     .then((data) => {
+      for (const result of data) {
+        if (result["name"] === cityName && result["state"] === stateName) {
+          destinationCoords[0] = result["lat"];
+          destinationCoords[1] = result["lon"];
+        }
+      }
+      //Code to remove carousel
+      const carouselRemoval = document.getElementById(
+        "carouselExampleCaptions"
+      );
+
+      if (deleteCounter === 1) {
+        carouselRemoval.parentElement.removeChild(carouselRemoval);
+      }
+
+      //Creation of the left coloumn title.
+      let leftTitle = document.createElement("h4");
+      let leftSide = document.querySelector("#leftSide");
+      leftTitle.style.color = "white";
+      leftTitle.style.display = "flex";
+      leftTitle.style.justifyContent = "center";
       leftSide.textContent = cityName + ", " + stateName;
 
-        for(const result of data){
-            if(result["name"] === cityName && result["state"] === stateName){
+      //Insert left column title into the column.
+      leftSide.prepend(leftTitle);
 
-                destinationCoords[0] = result["lat"]
-                destinationCoords[1] = result["lon"];
-                
-            }
-        } 
-        //Code to remove carousel
-        const carouselRemoval = document.getElementById("carouselExampleCaptions");
+      //Creation of the right column title.
+      let rightTitle = document.createElement("h2");
+      rightTitle.style.color = "white";
 
-        if(deleteCounter === 1) {
-          carouselRemoval.parentElement.removeChild(carouselRemoval);
-        }
+      //Creation of the right side div which will hold the cards.
+      let rightSide = document.querySelector("#rightSide");
+      rightSide.style["margin-bottom"] = "200px";
+      //Flag to only add the right title once.
+      rightSide.appendChild(rightTitle);
 
-        //Creation of the left side coloumn.
-        leftSide = document.querySelector(".col-md-2");
+      let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
+      const kelvin = 273;
 
-        //Creation of the left coloumn title.
-        let leftTitle = document.createElement("h4");
-        leftTitle.style.color = "white";
-        leftTitle.style.display = "flex";
-        leftTitle.style.justifyContent = "center";
-        leftTitle.textContent = "Campground Information"
-
-        //Specific location information
-        leftSide.textContent = cityName + ", " + stateName;
-        leftSide.style.color = "white";                                             
-        leftSide.style.paddingBottom = "600px";
-        document.querySelector(".row").appendChild(leftSide);
-
-        //Insert left column title into the column.
-        leftSide.prepend(leftTitle);
-       
-
-        //Creation of the right column title.
-        let rightTitle = document.createElement("h2");
-        rightTitle.style.color = "white";
-        rightTitle.style.display = "flex";
-        rightTitle.style.justifyContent = "center";
-        rightTitle.textContent = "Available Campgrounds"
-
-
-        //Creation of the right side div which will hold the cards.
-        rightSide = document.querySelector(".col-md-10");
-        //rightSide.style.color = "white";                                           //Placeholder for visuals  
-        //rightSide.textContent = "[Destinaions Cards]";
-        rightSide.style.paddingBottom = "600px";
-        rightSide.style.border = "5px solid red";
-        document.querySelector(".row").appendChild(rightSide);
-        
-        //Flag to only add the right title once.
-        if(deleteCounter === 1) {
-          rightSide.appendChild(rightTitle);
-        }
-        
-
-        let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
-        const kelvin = 273;
-
-        // Calling the API
-        fetch(weatherAPI)
+      // Calling the API
+      fetch(weatherAPI)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -296,15 +270,16 @@ function addEventToSearchBtn(event) {
 
                 createCard(imageUrl, campName, address, facilitySite);
             }
+            // else {
+            //   rightTitle.textContent = "Available Campgrounds";
+            // }
+          }
         })
-        .catch(error => console.log('error', error));
 
-        
-
-    }) //For out fetch
+        .catch((error) => console.log("error", error));
+    }); //For out fetch
+}
     
-}    
-
 function createCard(imageUrl, campName, address, facilitySite) {
      //Creation of cards
      const cardTemplate = document.createElement("div");
@@ -345,10 +320,11 @@ function createCard(imageUrl, campName, address, facilitySite) {
      
      document.querySelector(".col-md-10").appendChild(cardTemplate);
 
-}
+
 
 function addressToString(address) {
   let newAddress = "";
+
   let addressArray = [];
 
   addressArray.push(address.FacilityStreetAddress1);
@@ -383,3 +359,4 @@ function formatAddress(addressArray){
   }
   return result;
 }
+
