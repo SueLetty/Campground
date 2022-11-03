@@ -90,13 +90,16 @@ function loginEvent(event) {
   }
 }
 
-let deleteCounter = 0;
+var deleteCounter = 0;
 // using city name and state name to get longitude and latitude
 function addEventToSearchBtn(event) {
  event.preventDefault();
 
  deleteCounter++;
 
+ 
+ document.querySelector(".card-container").innerHTML = "No Campground available";
+ debugger;
   //use this to call your API index 0 is latitude, index 1 is longitude
   let destinationCoords = [];
   const inputCity = city.value;
@@ -130,26 +133,37 @@ function addEventToSearchBtn(event) {
         } 
         //Code to remove carousel
         const carouselRemoval = document.getElementById("carouselExampleCaptions");
-      
+
         if(deleteCounter === 1) {
           carouselRemoval.parentElement.removeChild(carouselRemoval);
         }
 
-
-
         //Creation of the left side coloumn.
         leftSide = document.querySelector(".col-md-2");
 
-        leftSide.textContent = cityName + ", " + stateName;
-        leftSide.style.color = "white";                                            //Placeholder for visuals 
-        leftSide.style.paddingBottom = "600px";
-        document.querySelector(".row").appendChild(leftSide);
-
-        let leftTitle = document.createElement("h2");
+        //Creation of the left coloumn title.
+        let leftTitle = document.createElement("h4");
         leftTitle.style.color = "white";
         leftTitle.style.display = "flex";
         leftTitle.style.justifyContent = "center";
-        leftTitle.textContent = "Available Campgrounds"
+        leftTitle.textContent = "Campground Information"
+
+        //Specific location information
+        leftSide.textContent = cityName + ", " + stateName;
+        leftSide.style.color = "white";                                             
+        leftSide.style.paddingBottom = "600px";
+        document.querySelector(".row").appendChild(leftSide);
+
+        //Insert left column title into the column.
+        leftSide.prepend(leftTitle);
+       
+
+        //Creation of the right column title.
+        let rightTitle = document.createElement("h2");
+        rightTitle.style.color = "white";
+        rightTitle.style.display = "flex";
+        rightTitle.style.justifyContent = "center";
+        rightTitle.textContent = "Available Campgrounds"
 
 
         //Creation of the right side div which will hold the cards.
@@ -160,13 +174,11 @@ function addEventToSearchBtn(event) {
         rightSide.style.border = "5px solid red";
         document.querySelector(".row").appendChild(rightSide);
         
-        //Flag to only add the Title once.
+        //Flag to only add the right title once.
         if(deleteCounter === 1) {
-          rightSide.appendChild(leftTitle);
+          rightSide.appendChild(rightTitle);
         }
         
-        
-       
 
         let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${destinationCoords[0]}&lon=${destinationCoords[1]}&appid=6a78d426e59589643788ea1b6371579f`;
         const kelvin = 273;
@@ -214,6 +226,8 @@ function addEventToSearchBtn(event) {
             document.querySelector(".col-md-2").appendChild(timeDiv);
         });
         
+
+        //Variables for the campground fetch.
         let baseUrl = `https://camp-sight7.herokuapp.com/`;
         let facilitiesParam = `facilities?`;
         let neededParam = 'query=Campground&full=true';
@@ -236,7 +250,9 @@ function addEventToSearchBtn(event) {
         let address;
         let phone;
         let facilitySite;
+        
 
+        //Fetch to get the campground informatin
         fetch(primaryFetch, requestOptions)
         .then(response => response.json())
         .then(data => {
@@ -266,6 +282,7 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      //Creation of cards
      const cardTemplate = document.createElement("div");
      cardTemplate.classList.add("card"); //change from
+     cardTemplate.setAttribute("id", "cardId")
      cardTemplate.style.width = "18rem";
      
      const cardImage = document.createElement("img");
