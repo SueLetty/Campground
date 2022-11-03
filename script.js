@@ -4,7 +4,7 @@ const onSuccess = (position) => {
   let userLong = position.coords.longitude;
   let userLat = position.coords.latitude;
   // API URL
-  let weatherAPI = `http://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLong}&appid=6a78d426e59589643788ea1b6371579f`;
+  let weatherAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLong}&appid=6a78d426e59589643788ea1b6371579f`;
   const kelvin = 273;
 
   // Calling the API
@@ -12,7 +12,7 @@ const onSuccess = (position) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      let temperature = Math.floor(data["main"]["temp"] - kelvin) * 1.8 + 32;
+      let temperature = Math.floor((data["main"]["temp"] - kelvin) * 1.8) + 32;
       local_temperature.textContent =
         "Current Local Temperature: " + temperature + "°F";
     });
@@ -102,6 +102,7 @@ var deleteCounter = 0;
 function addEventToSearchBtn(event) {
   event.preventDefault();
 
+  document.getElementById(".card-container").innerHTML = "";
   deleteCounter++;
 
   //use this to call your API index 0 is latitude, index 1 is longitude
@@ -309,7 +310,6 @@ function createCard(imageUrl, campName, address, facilitySite) {
     `https://www.recreation.gov/camping/campgrounds/${facilitySite}`
   );
   linkTag.setAttribute("target", "_blank");
-  linkTag.style.position = "fixed";
   linkTag.textContent = "More Information";
   cardBody.appendChild(linkTag);
 
