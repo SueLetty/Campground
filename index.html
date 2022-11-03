@@ -24,7 +24,8 @@
         <a href="./index.html">Home</a>
         <a href="./aboutus.html">About Us</a>
         <a href="./signup.html">SignUp</a>
-        <a href="./login.html">Login</a>
+        <a id="login" href="./login.html">Login</a>
+        <div id="greeting"></div>
       </div>
       <a href="./index.html"
         ><img id="logo" src="./logo.png" alt="camp campgroud camping campsight"
@@ -38,9 +39,10 @@
     <div id="search_bar">
       <form id="form_btn" action="">
         <label for="city">City</label>
-        <input id="city" type="text" placeholder="Enter a City name" />
+        <input id="city" type="text" placeholder="Enter a City name" / required>
         <label for="state">State</label>
-        <input id="state" type="text" placeholder="Enter a State name" />
+        <input id="state" type="text" placeholder="Enter a State name" /
+        required>
         <input
           class="submitBtn"
           type="submit"
@@ -51,8 +53,8 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-10 card-container"></div>
+        <div class="col-md-2" id="leftSide"></div>
+        <div class="col-md-10 card-container" id="rightSide"></div>
       </div>
     </div>
     <div

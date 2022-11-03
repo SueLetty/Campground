@@ -23,6 +23,18 @@ const onError = (error) => {
 
 navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
+if (!!localStorage.getItem("currentUser")) {
+  document.getElementById("greeting").innerText =
+    "Hello, " + JSON.parse(localStorage.getItem("currentUser")).uName;
+  debugger;
+  //   if (
+  //     document.getElementById("login") &&
+  //     document.getElementById.innerText === "Login"
+  //   ) {
+  document.querySelector("#login").textContent = "Logout";
+  //   }
+}
+
 //Code used to modify local current time.
 let currentDate = new Date();
 let hour = currentDate.getHours();
@@ -80,6 +92,7 @@ function loginEvent(event) {
   for (let i = 0; i < userList.length; i++) {
     if (userList[i].uName === uname && userList[i].password === password) {
       flag = true;
+      localStorage.setItem("currentUser", JSON.stringify(userList[i]));
       window.location = "index.html";
     }
   }
@@ -104,9 +117,9 @@ function addEventToSearchBtn(event) {
   let destinationCoords = [];
   const inputCity = city.value;
   const inputState = state.value;
-  const cityName =
+  let cityName =
     inputCity.charAt(0).toUpperCase() + inputCity.substring(1).toLowerCase();
-  const stateName =
+  let stateName =
     inputState.charAt(0).toUpperCase() + inputState.substring(1).toLowerCase();
   let newCityName;
 
@@ -115,13 +128,29 @@ function addEventToSearchBtn(event) {
   let coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
 
   if (cityName.includes(" ")) {
+    const index = cityName.indexOf(" ");
+    cityName =
+      inputCity.charAt(0).toUpperCase() +
+      inputCity.substring(1, index + 1).toLowerCase() +
+      inputCity.charAt(index + 1).toUpperCase() +
+      inputCity.substring(index + 2).toLowerCase();
     newCityName = cityName.replace(" ", "%20");
     coord_API = `http://api.openweathermap.org/geo/1.0/direct?q=${newCityName}&limit=10&appid=6a78d426e59589643788ea1b6371579f`;
+  }
+
+  if (stateName.includes(" ")) {
+    const index = stateName.indexOf(" ");
+    stateName =
+      inputState.charAt(0).toUpperCase() +
+      inputState.substring(1, index + 1).toLowerCase() +
+      inputState.charAt(index + 1).toUpperCase() +
+      inputState.substring(index + 2).toLowerCase();
   }
 
   fetch(coord_API)
     .then((res) => res.json())
     .then((data) => {
+      leftSide.textContent = cityName + ", " + stateName;
 
         for(const result of data){
             if(result["name"] === cityName && result["state"] === stateName){
@@ -189,11 +218,11 @@ function addEventToSearchBtn(event) {
         .then((data) => {
           console.log(data);
           let temperature =
-            Math.floor(data["main"]["temp"] - kelvin) * 1.8 + 32;
+            Math.floor((data["main"]["temp"] - kelvin) * 1.8) + 32;
           let lowTemp =
-            Math.floor(data["main"]["temp_min"] - kelvin) * 1.8 + 32;
+            Math.floor((data["main"]["temp_min"] - kelvin) * 1.8) + 32;
           let highTemp =
-            Math.floor(data["main"]["temp_max"] - kelvin) * 1.8 + 32;
+            Math.floor((data["main"]["temp_max"] - kelvin) * 1.8) + 32;
           //insert thiz into the left bracket
           //Creation of the div within the left side column.
           weatherDiv = document.createElement("div");
@@ -202,7 +231,8 @@ function addEventToSearchBtn(event) {
             "Current Temp: " +
             temperature +
             "°F" +
-            "          Low: " +
+            "          " +
+            "Low: " +
             lowTemp +
             "°F" +
             "\n High: " +
@@ -217,16 +247,15 @@ function addEventToSearchBtn(event) {
       fetch(userUrl)
         .then((res) => res.json())
         .then((data) => {
-            const destinationTime = data.date_time;
+          const destinationTime = data.date_time;
 
-            //Creation of the div within the left side column.
-            timeDiv = document.createElement("div");
-            timeDiv.setAttribute("id", "time_div");            
-            timeDiv.textContent = destinationTime;  //Place Weather variable here
-            document.querySelector(".col-md-2").appendChild(timeDiv);
+          //Creation of the div within the left side column.
+          timeDiv = document.createElement("div");
+          timeDiv.setAttribute("id", "time_div");
+          timeDiv.textContent = destinationTime; //Place Weather variable here
+          document.querySelector(".col-md-2").appendChild(timeDiv);
         });
         
-
         //Variables for the campground fetch.
         let baseUrl = `https://camp-sight7.herokuapp.com/`;
         let facilitiesParam = `facilities?`;
@@ -283,11 +312,14 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      cardTemplate.classList.add("card"); //change from
      cardTemplate.setAttribute("id", "cardId")
      cardTemplate.style.width = "18rem";
-     
+     cardTemplate.style.margin = "5px";
+
      const cardImage = document.createElement("img");
      cardImage.classList.add("card-img-top");
      cardImage.setAttribute("src", imageUrl);
      cardImage.setAttribute("alt", imageUrl);
+     cardImage.style.height = "250px";
+     cardImage.style.width = "285px";
      cardTemplate.appendChild(cardImage);
      
      const cardBody = document.createElement("div");
@@ -313,6 +345,7 @@ function createCard(imageUrl, campName, description, address, phone, facilitySit
      cardBody.appendChild(linkTag);
      
      document.querySelector(".col-md-10").appendChild(cardTemplate);
+
 }
 
 function addressToString(address) {
