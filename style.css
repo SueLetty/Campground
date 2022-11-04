@@ -161,7 +161,11 @@ footer{
     justify-content: space-around;
     align-items: center;
 }
-
+#icons{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 .card-text{
     white-space: pre-wrap;
 }
